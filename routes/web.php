@@ -39,7 +39,7 @@ Route::get('/', function () {
     // $students = Student::select(['name', 'email'])->whereNotNull('email')->get();
     // dd($students);
 
-    $student = Student::all()->where('email', 'jad4@student.le.ac.uk')->first();
+    $student = Student::where('email', 'jad4@student.le.ac.uk')->first();
     // update only if student found and status column exists and status is not active
     if ($student && $student->status !== 'active') {
         $student->status = 'active';
