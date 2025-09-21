@@ -21,3 +21,4 @@ Route::middleware('auth')->group(function () {
 require __DIR__ . '/auth.php';
 
 Route::resource('notes', NoteController::class)->middleware('auth');
+Route::resource('notebooks', NoteController::class)->middleware('auth');
