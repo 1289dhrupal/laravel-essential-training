@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Notebook extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+
+    public function getRouteKeyName()
+    {
+        return 'uuid';
+    }
 }

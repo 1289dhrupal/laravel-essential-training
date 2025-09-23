@@ -45,7 +45,7 @@ class NoteController extends Controller
         ]);
         $note->save();
 
-        // return redirect()->route('notes.index')->with('success', 'Note created successfully.');
+        return redirect()->route('notes.index')->with('success', 'Note created successfully.');
     }
 
     /**

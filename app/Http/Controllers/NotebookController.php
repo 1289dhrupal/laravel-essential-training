@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Notebook;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class NotebookController extends Controller
 {
@@ -12,7 +14,9 @@ class NotebookController extends Controller
      */
     public function index()
     {
-        //
+        $user_id = Auth::id();
+        $notebooks = Notebook::where('user_id', $user_id)->latest('updated_at')->paginate(5);
+        return view('notebooks.index')->with('notebooks', $notebooks);
     }
 
     /**
@@ -20,7 +24,7 @@ class NotebookController extends Controller
      */
     public function create()
     {
-        //
+        return view('notebooks.create');
     }
 
     /**
@@ -28,7 +32,17 @@ class NotebookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|max:120',
+        ]);
+
+        $notebook = new Notebook([
+            'user_id' => Auth::id(),
+            'uuid' => Str::uuid(),
+            'name' => $request->name
+        ]);
+        $notebook->save();
+        return redirect()->route('notebooks.index')->with('success', 'Notebook created successfully.');
     }
 
     /**
@@ -36,7 +50,11 @@ class NotebookController extends Controller
      */
     public function show(Notebook $notebook)
     {
-        //
+        if ($notebook->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        return view('notebooks.show', ['notebook' => $notebook]);
     }
 
     /**
