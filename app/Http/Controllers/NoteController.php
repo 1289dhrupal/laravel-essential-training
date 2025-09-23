@@ -31,7 +31,19 @@ class NoteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'text' => 'required|string',
+        ]);
+
+        $note = new Note([
+            'user_id' => Auth::id(),
+            'title' => $request->title,
+            'text' => $request->text,
+        ]);
+        $note->save();
+
+        // return redirect()->route('notes.index')->with('success', 'Note created successfully.');
     }
 
     /**
@@ -39,7 +51,12 @@ class NoteController extends Controller
      */
     public function show(Note $note)
     {
-        //
+        if ($note->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        // return view('notes.show')->with('note', $note);
+        return view('notes.show', ['note' => $note]);
     }
 
     /**
