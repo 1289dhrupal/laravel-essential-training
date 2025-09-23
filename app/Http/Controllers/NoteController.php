@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Note;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 
 class NoteController extends Controller
 {
@@ -33,15 +33,15 @@ class NoteController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'text' => 'required|string',
+            'title' => 'required|max:120',
+            'text' => 'required'
         ]);
 
         $note = new Note([
-            'uuid' => Str::uuid(),
             'user_id' => Auth::id(),
+            'uuid' => Str::uuid(),
             'title' => $request->title,
-            'text' => $request->text,
+            'text' => $request->text
         ]);
         $note->save();
 
