@@ -7,6 +7,10 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+
+            <x-alert-success> {{ session('success') }} </x-alert-success>
+            <x-alert-error> {{ session('error') }} </x-alert-error>
+
             <x-link-button href="{{ route('notes.create') }}">
                 + New note
             </x-link-button>
