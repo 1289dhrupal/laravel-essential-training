@@ -47,3 +47,9 @@ Route::get('/', function () {
     }
     dd($student);
 });
+
+Route::get('/about', function () {
+    return view('about');
+});
+
+Route::get('/hello', [GreetingController::class, 'index']);

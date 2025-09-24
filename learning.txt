@@ -1,0 +1,34 @@
+Section 1: Introduction to Laravel
+1. Entry point index.php -> app.php -> web.php -> welcome.php
+2. It works on views
+3. 2 ways the layouts can be created
+  3.1. Template Engine
+     -> Create a .blade.php file in layouts folder
+     -> use @extends to specify which layout to use
+     -> use @section to define sections
+     -> use @yield to display sections
+     -> Example:
+           layouts/base.blade.php will have @yield('name') and @yield('content')
+           ------------------------
+           @extends('layouts.base') to specify which layout to use
+           @section('name', 'Dhrupal') to specify the section for name
+           @section('content') <h1 class="text-4xl font-bold">About us</h1> @endsection to specify the section for content
+  3.2. Blade Components
+    -> Create a .blade.php file in components folder
+    -> use <x-component-name> to use the component
+    -> use $slotName to display slots
+    -> use <x-slot name="slot-name"> to define slots
+    -> Example:
+          components/alert.blade.php will have <div class="parent-div">{{ $name }} {{ $content }}</div>
+          ------------------------
+          <x-base>
+            <x-slot name="name">Dhrupal</x-slot>
+            <x-slot name="content">
+              <h1 class="text-4xl font-bold">About us</h1>
+            </x-slot>
+          </x-base>
+    3.3. Creating Controllers
+      -> use php artisan make:controller -> WelcomeController
+      -> creates a file in controller WelcomeController.php
+      -> create public index method return view('view name')
+      -> also update routes Route::get('/', [WelcomeController::class, 'index']);
