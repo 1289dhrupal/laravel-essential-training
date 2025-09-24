@@ -6,7 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\NotebookController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return "<h1>Welcome</h1>";
 });
 
 Route::middleware('auth')->group(function () {
