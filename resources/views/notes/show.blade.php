@@ -23,6 +23,7 @@
                     <x-danger-button type="submit">Delete Note</x-danger-button>
                 </form>
             </div>
+
             <div class="bg-white p-6 overflow-hidden shadow-sm sm:rounded-lg">
                 <h2 class="font-bold text-4xl text-indigo-600">
                     {{ $note->title }}

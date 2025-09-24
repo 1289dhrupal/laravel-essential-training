@@ -27,8 +27,7 @@ class NoteController extends Controller
      */
     public function create()
     {
-        $user_id = Auth::id();
-        $notebooks = Notebook::where('user_id', $user_id)->get(['id', 'name']);
+        $notebooks = Notebook::where('user_id', Auth::id())->get(['id', 'name']);
         return view('notes.create')->with('notebooks', $notebooks);
     }
 
@@ -50,9 +49,10 @@ class NoteController extends Controller
             'text' => $request->text,
             'notebook_id' => $request->notebook_id
         ]);
+
         $note->save();
 
-        return redirect()->route('notes.show', $note)->with('success', 'Note created successfully.');
+        return to_route('notes.show', $note)->with('success', 'Note created successfully.');
     }
 
     /**
@@ -76,8 +76,9 @@ class NoteController extends Controller
         if ($note->user_id !== Auth::id()) {
             abort(403);
         }
-        $user_id = Auth::id();
-        $notebooks = Notebook::where('user_id', $user_id)->get(['id', 'name']);
+
+        $notebooks = Notebook::where('user_id', Auth::id())->get(['id', 'name']);
+
         return view('notes.edit', ['note' => $note, 'notebooks' => $notebooks]);
     }
 

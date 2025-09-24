@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('notes', function (Blueprint $table) {
-            $table->foreignIdFor(Notebook::class)->nullable()->after('user_id')->constrained()->nullOnDelete();
+            $table->foreignIdFor(Notebook::class)->nullable();
         });
     }
 
@@ -23,7 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('notes', function (Blueprint $table) {
-            $table->dropColumn('notebook_id');
+            $table->dropIfExists('notebook_id');
         });
     }
 };

@@ -11,16 +11,19 @@
                 <form action="{{ route('notes.update', $note) }}" method="post">
                     @csrf
                     @method('put')
+
                     <x-text-input name="title" class="w-full" placeholder="Note title"
                         value="{{ @old('title', $note->title) }}"></x-text-input>
                     @error('title')
                         <div class="text-sm mt-1 text-red-500">{{ $message }}</div>
                     @enderror
+
                     <x-textarea name="text" placeholder="Type your note" rows="8"
                         value="{{ @old('text', $note->text) }}" class="w-full mt-6"></x-textarea>
                     @error('text')
                         <div class="text-sm mt-1 text-red-500">{{ $message }}</div>
                     @enderror
+
                     <x-select-input name="notebook_id" :options="$notebooks->pluck('name', 'id')" :selected_value="old('notebook_id', $note->notebook_id)" />
                     @error('notebook_id')
                         <div class="text-sm mt-1 text-red-500">{{ $message }}</div>
