@@ -11,6 +11,11 @@
             <x-alert-success> {{ session('success') }} </x-alert-success>
             <x-alert-error> {{ session('error') }} </x-alert-error>
 
+            <span class="px-2 py-1 border border-indigo-400 bg-indigo-100 rounded font-semibold text-sm">
+                {{ $note->notebook->name }}
+            </span>
+
+            {{-- show created and updated at --}}
             <div class="flex gap-6">
                 <p class="opacity-70"><strong>Created:</strong> {{ $note->created_at->diffForHumans() }}</p>
                 <p class="opacity-70"><strong>Last changed:</strong> {{ $note->updated_at->diffForHumans() }}</p>

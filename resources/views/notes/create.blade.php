@@ -15,6 +15,7 @@
                     @error('title')
                         <div class="text-sm mt-1 text-red-500">{{ $message }}</div>
                     @enderror
+
                     <x-textarea name="text" placeholder="Type your note" rows="8" value="{{ @old('text') }}"
                         class="w-full mt-6"></x-textarea>
                     @error('text')
