@@ -1,5 +1,5 @@
-@if(session('success'))
-  <p class="mb-4 px-4 py-2 bg-green-100 border border-green-200 text-green-700 rounded-md">
-    {{ $slot }}
-  </p>
+@if (session('success'))
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+        <span class="block sm:inline">{{ $slot }}</span>
+    </div>
 @endif

@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Note;
+use App\Models\Notebook;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
+use function Laravel\Prompts\select;
 
 class NoteController extends Controller
 {
@@ -14,7 +17,15 @@ class NoteController extends Controller
      */
     public function index()
     {
-        $notes = Note::whereBelongsTo(Auth::user())->latest('updated_at')->paginate(5);
+        /** @var App\Models\User $user */
+        $user = Auth::user();
+
+        // $user_id = Auth::id();
+        // $notes = Note::where('user_id', $user_id)->latest('updated_at')->paginate(5);
+
+        // $notes = $user->notes()->latest('updated_at')->paginate(5);
+        $notes = Note::whereBelongsTo($user)->latest('updated_at')->paginate(5);
+
         return view('notes.index')->with('notes', $notes);
     }
 
@@ -23,7 +34,7 @@ class NoteController extends Controller
      */
     public function create()
     {
-        return view('notes.create');
+        return view('notes.create')->with('notebooks', $this->getNotebooks());
     }
 
     /**
@@ -33,16 +44,21 @@ class NoteController extends Controller
     {
         $request->validate([
             'title' => 'required|max:120',
-            'text' => 'required'
+            'text' => 'required',
+            'notebook_id' => 'nullable|exists:notebooks,id'
         ]);
 
-        $note = Auth::user()->notes()->create([
+        /** @var App\Models\User $user */
+        $user = Auth::user();
+
+        $note = $user->notes()->create([
             'uuid' => Str::uuid(),
             'title' => $request->title,
-            'text' => $request->text
+            'text' => $request->text,
+            'notebook_id' => $request->notebook_id
         ]);
 
-        return to_route('notes.show', $note);
+        return to_route('notes.show', $note)->with('success', 'Note created successfully.');
     }
 
     /**
@@ -50,10 +66,11 @@ class NoteController extends Controller
      */
     public function show(Note $note)
     {
-        if (!$note->user->is(Auth::user())) {
+        if ($note->user->is(Auth::user()) === false) {
             abort(403);
         }
 
+        // return view('notes.show')->with('note', $note);
         return view('notes.show', ['note' => $note]);
     }
 
@@ -62,11 +79,10 @@ class NoteController extends Controller
      */
     public function edit(Note $note)
     {
-        if (!$note->user->is(Auth::user())) {
+        if ($note->user->is(Auth::user()) === false) {
             abort(403);
         }
-
-        return view('notes.edit', ['note' => $note]);
+        return view('notes.edit', ['note' => $note, 'notebooks' => $this->getNotebooks()]);
     }
 
     /**
@@ -74,22 +90,23 @@ class NoteController extends Controller
      */
     public function update(Request $request, Note $note)
     {
-        if (!$note->user->is(Auth::user())) {
+        if ($note->user->is(Auth::user()) === false) {
             abort(403);
         }
 
         $request->validate([
             'title' => 'required|max:120',
-            'text' => 'required'
+            'text' => 'required',
+            'notebook_id' => 'nullable|exists:notebooks,id'
         ]);
 
         $note->update([
             'title' => $request->title,
-            'text' => $request->text
+            'text' => $request->text,
+            'notebook_id' => $request->notebook_id
         ]);
 
-        return to_route('notes.show', $note)
-            ->with('success', 'Changes saved');
+        return to_route('notes.show', $note)->with('success', 'Note updated successfully.');
     }
 
     /**
@@ -97,13 +114,22 @@ class NoteController extends Controller
      */
     public function destroy(Note $note)
     {
-        if (!$note->user->is(Auth::user())) {
+        if ($note->user->is(Auth::user()) === false) {
             abort(403);
         }
 
         $note->delete();
 
-        return to_route('notes.index')
-            ->with('success', 'Note deleted!');
+        return to_route('notes.index')->with('success', 'Note deleted successfully.');
+    }
+
+    /**
+     * Get the list of notebooks for the authenticated user.
+     */
+    private function getNotebooks()
+    {
+        /** @var App\Models\User $user */
+        $user = Auth::user();
+        return Notebook::whereBelongsTo($user)->get(['id', 'name']);
     }
 }
