@@ -11,11 +11,9 @@
             <x-alert-success> {{ session('success') }} </x-alert-success>
             <x-alert-error> {{ session('error') }} </x-alert-error>
 
-            {{-- show the note book as tag --}}
-            <div
-                class="inline-block bg-indigo-100 text-indigo-600 text-sm font-semibold px-2.5 py-0.5 rounded border border-indigo-600">
-                {{ $notebook->name }}
-            </div>
+            <span class="px-2 py-1 border border-indigo-400 bg-indigo-100 rounded font-semibold text-sm">
+                {{ $note->notebook->name }}
+            </span>
 
             {{-- show created and updated at --}}
             <div class="flex gap-6">

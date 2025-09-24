@@ -34,8 +34,7 @@ class NoteController extends Controller
      */
     public function create()
     {
-        $notebooks = Notebook::whereBelongsTo(Auth::user())->get(['id', 'name']);
-        return view('notes.create')->with('notebooks', $notebooks);
+        return view('notes.create')->with('notebooks', $this->getNotebooks());
     }
 
     /**
@@ -71,9 +70,8 @@ class NoteController extends Controller
             abort(403);
         }
 
-        $notebook = $note->notebook;
         // return view('notes.show')->with('note', $note);
-        return view('notes.show', ['note' => $note, 'notebook' => $notebook]);
+        return view('notes.show', ['note' => $note]);
     }
 
     /**
@@ -84,8 +82,7 @@ class NoteController extends Controller
         if ($note->user->is(Auth::user()) === false) {
             abort(403);
         }
-        $notebooks = Notebook::whereBelongsTo(Auth::user())->get(['id', 'name']);
-        return view('notes.edit', ['note' => $note, 'notebooks' => $notebooks]);
+        return view('notes.edit', ['note' => $note, 'notebooks' => $this->getNotebooks()]);
     }
 
     /**
@@ -124,5 +121,15 @@ class NoteController extends Controller
         $note->delete();
 
         return to_route('notes.index')->with('success', 'Note deleted successfully.');
+    }
+
+    /**
+     * Get the list of notebooks for the authenticated user.
+     */
+    private function getNotebooks()
+    {
+        /** @var App\Models\User $user */
+        $user = Auth::user();
+        return Notebook::whereBelongsTo($user)->get(['id', 'name']);
     }
 }
