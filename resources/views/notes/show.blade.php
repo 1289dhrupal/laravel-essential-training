@@ -1,7 +1,9 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ !$note->trashed() ? 'Notes' : 'Trashed' }}
+            <<<<<<< HEAD
+                {{ !$note->trashed() ? 'Notes' : 'Trashed' }}======={{ !$note->trashed() ? 'Notes' : 'Trash' }}>>>>>>>
+                origin/07_05e
         </h2>
     </x-slot>
 
@@ -35,15 +37,14 @@
                 <div class="flex gap-6">
                     <p class="opacity-70"><strong>Deleted:</strong> {{ $note->deleted_at->diffForHumans() }}</p>
 
-                    <form action="{{ route('trashed.update', $note) }}" method="post" class="">
+                    <form action="{{ route('trashed.update', $note) }}" method="post" class="ml-auto">
                         @method('put')
                         @csrf
                         <x-primary-button type="submit">Restore</x-primary-button>
                     </form>
 
                     <form action="{{ route('trashed.destroy', $note) }}" method="post"
-                        onsubmit="return confirm('Are you sure you want to permanently delete this note? This action cannot be undone.');"
-                        class="ml-auto">
+                        onsubmit="return confirm('Are you sure you want to permanently delete this note? This action cannot be undone.');">
                         @csrf
                         @method('delete')
                         <x-danger-button type="submit">Delete Permanently</x-danger-button>

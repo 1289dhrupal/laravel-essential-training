@@ -1,7 +1,9 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ request()->routeIs('notes.index') ? 'Notes' : 'Trashed' }}
+            <<<<<<< HEAD
+                {{ request()->routeIs('notes.index') ? 'Notes' : 'Trashed' }}======={{ request()->routeIs('notes.index') ? 'Notes' : 'Trash' }}>
+                >>>>>> origin/07_05e
         </h2>
     </x-slot>
 
