@@ -9,6 +9,12 @@ class Note extends Model
 {
     use HasFactory;
 
+    // protected $fillable = [
+    //     'user_id',
+    //     'title',
+    //     'text',
+    // ];
+
     protected $guarded = [];
 
     public function getRouteKeyName()
