@@ -26,4 +26,9 @@ class Note extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function notebook()
+    {
+        return $this->belongsTo(Notebook::class);
+    }
 }

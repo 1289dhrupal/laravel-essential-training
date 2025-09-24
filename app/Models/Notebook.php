@@ -10,4 +10,14 @@ class Notebook extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function notes()
+    {
+        return $this->hasMany(Note::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

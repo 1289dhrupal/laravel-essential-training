@@ -34,7 +34,7 @@ class NoteController extends Controller
      */
     public function create()
     {
-        $notebooks = Notebook::where('user_id', Auth::id())->get(['id', 'name']);
+        $notebooks = Notebook::whereBelongsTo(Auth::user())->get(['id', 'name']);
         return view('notes.create')->with('notebooks', $notebooks);
     }
 
@@ -71,8 +71,9 @@ class NoteController extends Controller
             abort(403);
         }
 
+        $notebook = $note->notebook;
         // return view('notes.show')->with('note', $note);
-        return view('notes.show', ['note' => $note]);
+        return view('notes.show', ['note' => $note, 'notebook' => $notebook]);
     }
 
     /**
@@ -83,9 +84,7 @@ class NoteController extends Controller
         if ($note->user->is(Auth::user()) === false) {
             abort(403);
         }
-
-        $notebooks = Notebook::where('user_id', Auth::id())->get(['id', 'name']);
-
+        $notebooks = Notebook::whereBelongsTo(Auth::user())->get(['id', 'name']);
         return view('notes.edit', ['note' => $note, 'notebooks' => $notebooks]);
     }
 
