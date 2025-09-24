@@ -8,8 +8,6 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-use function Laravel\Prompts\select;
-
 class NoteController extends Controller
 {
     /**
@@ -120,7 +118,7 @@ class NoteController extends Controller
 
         $note->delete();
 
-        return to_route('notes.index')->with('success', 'Note deleted successfully.');
+        return to_route('notes.index')->with('success', 'Note moved to trash!');
     }
 
     /**
